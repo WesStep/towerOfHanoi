@@ -19,7 +19,7 @@ function initRings() {
 	for (let i = 0; i < RING_COUNT; i++) {
 		rings[i] = document.querySelector('#ring-' + (i + 1));
 	}
-};
+}
 
 function initPosts() {
 	for (let i = 0; i < POST_COUNT; i++) {
@@ -38,23 +38,21 @@ function initPlayAreas() {
 
 function initDraggableElements() {
 	rings[0].setAttribute('draggable', true);
-	document.addEventListener('drag', () => {}, false);
+	document.addEventListener('drag', () => {});
 	document.addEventListener('dragstart', (e) => {
 		draggedRing = e.target;
-	}, false);
+	});
 	document.addEventListener('dragend', (e) => {
 		e.preventDefault();
-	}, false);
-	document.addEventListener('drop', moveRing, false);
+	});
+	document.addEventListener('drop', moveRing);
 }
 
 function moveRing(e) {
 	e.preventDefault();
-	if (e.target.className === 'post') {
+	if (e.target.className === 'play-area' || e.target.className === 'post') {
 		const origin = draggedRing.parentNode;
-		const destination = e.target.parentNode;
-		console.dir(origin.children);
-		console.dir(destination.firstElementChild);
+		const destination = (e.target.className === 'play-area') ? e.target : e.target.parentElement;
 		origin.removeChild(draggedRing);
 		if (origin.children[1]) {
 			origin.children[1].setAttribute('draggable', true);
