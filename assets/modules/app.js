@@ -5,14 +5,12 @@ const PLAY_AREA_COUNT = 3;
 let draggedRing;
 
 let rings = [];
-initRings();
-
 let posts = [];
-initPosts();
-
 let playAreas = [];
-initPlayAreas();
 
+initRings();
+initPosts();
+initPlayAreas();
 initDraggableElements();
 
 function initRings() {
