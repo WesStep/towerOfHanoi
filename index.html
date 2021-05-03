@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Tower of Hanoi</title>
 	<link rel="stylesheet" href="./assets/app.css">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
@@ -9,24 +10,27 @@
 	<script type="module" src="./assets/modules/app.js"></script>
 </head>
 <body>
-	<h1>Tower of Hanoi</h1>
-	<div>
+	<header>
+		<h1>Tower of Hanoi</h1>
+		<p>Use "1", "2", and "3" on your keyboard to move rings. First to pick up a ring, and second to place a ring.</p>
+	</header>
+	<div class="body">
 		<div id="play-area">
 			<div id="dropzone-1" class="dropzone hidden">1</div>
 			<div id="dropzone-2" class="dropzone hidden">2</div>
 			<div id="dropzone-3" class="dropzone hidden">3</div>
 			<div id="play-area-1" class="play-area">
 				<div id="post-1" class="post"></div>
-				<div id="ring-1" class="ring"></div>
-				<div id="ring-2" class="ring"></div>
-				<div id="ring-3" class="ring"></div>
-				<div id="ring-4" class="ring"></div>
-				<div id="ring-5" class="ring"></div>
-				<div id="ring-6" class="ring"></div>
-				<div id="ring-7" class="ring"></div>
-				<div id="ring-8" class="ring"></div>
-				<div id="ring-9" class="ring"></div>
-				<div id="ring-10" class="ring"></div>
+				<div id="ring-1" data-id="1" class="ring"></div>
+				<div id="ring-2" data-id="2" class="ring"></div>
+				<div id="ring-3" data-id="3" class="ring"></div>
+				<div id="ring-4" data-id="4" class="ring"></div>
+				<div id="ring-5" data-id="5" class="ring"></div>
+				<div id="ring-6" data-id="6" class="ring"></div>
+				<div id="ring-7" data-id="7" class="ring"></div>
+				<div id="ring-8" data-id="8" class="ring"></div>
+				<div id="ring-9" data-id="9" class="ring"></div>
+				<div id="ring-10" data-id="10" class="ring"></div>
 			</div>
 			<div id="play-area-2" class="play-area">
 				<div id="post-2" class="post"></div>

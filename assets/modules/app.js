@@ -84,6 +84,23 @@ function pickUpRing() {
 
 function placeRing() {
 	const postElement = destinationPlayArea.querySelector('.post');
-	postElement.after(activeRing);
+	const topRing = destinationPlayArea.querySelector('.ring');
+	if (postIsEmpty() || !postIsEmpty() && activeRingIsSmaller(topRing)) {
+		postElement.after(activeRing);
+	} else {
+		returnRingBack();
+	}
 	activeRing = null;
+}
+
+function postIsEmpty() {
+	return destinationPlayArea.querySelector('.ring') === null;
+}
+
+function activeRingIsSmaller(topRing) {
+	return parseInt(topRing.dataset.id) > parseInt(activeRing.dataset.id);
+}
+
+function returnRingBack() {
+	sourcePlayArea.querySelector('.post').after(activeRing);
 }

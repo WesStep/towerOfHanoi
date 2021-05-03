@@ -15,12 +15,22 @@
 }
 
 body {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+	position:relative;
 	height: 100vh;
 	width: 100vw;
 	background: no-repeat center/100% 100% url('./images/papyrus.jpg');
+}
+
+.body {
+	position: absolute;
+	height: 100vh;
+	width: 100vw;
+	display: grid;
+	grid-template:
+		"header" 1fr
+		"playArea" auto
+		"base" auto / 1fr;
+	align-items: end;
 }
 
 .draggable {
@@ -50,10 +60,26 @@ body {
 	grid-area: t-3;
 }
 
-h1 {
-	text-align: center;
+header {
+	position:absolute;
+	left: 0;
+	right: 0;
+	display: grid;
+	grid-auto-rows: auto;
+	justify-items: center;
+}
+
+header h1 {
 	font-size: 4rem;
 	color: rgba(0, 0, 0, 0.2);
+	text-shadow: rgba(0, 0, 0, 0.7) 0 0 3px;
+}
+
+header p {
+	text-align: center;
+	font-size: 2.5rem;
+	max-width: 40rem;
+	color: rgba(0, 0, 0, 0.3);
 	text-shadow: rgba(0, 0, 0, 0.7) 0 0 3px;
 }
 
