@@ -2,14 +2,16 @@ const RING_COUNT = 10;
 const PLAY_AREA_COUNT = 3;
 const ACCEPTABLE_KEYS = ['1', '2', '3'];
 
-let availableDropZones = [];
 let activeRing;
-let sourcePlayArea;
+let activePlayArea;
+let availableDropZones = [];
 let destinationPlayArea;
-let rings = initRings();
-let playAreas = initPlayAreas();
 let dropZones = initDropZones();
+let keyNumber;
 let moving = false;
+let playAreas = initPlayAreas();
+let rings = initRings();
+let sourcePlayArea;
 
 initKeyListeners();
 
@@ -43,27 +45,30 @@ function initDropZones() {
 
 function initKeyListeners() {
 	document.addEventListener('keypress', (e) => {
-		const key = e.key;
-		if (ACCEPTABLE_KEYS.includes(key)) {
-			const keyNumber = parseInt(key);
-			const activePlayArea = playAreas[keyNumber - 1];
+		if (ACCEPTABLE_KEYS.includes(e.key)) {
+			initMoveValues(e);
 			if (!moving) {
 				sourcePlayArea = activePlayArea;
 				if(sourcePlayArea.querySelector('.ring')) {
 					availableDropZones = dropZones.filter(dropzone => dropzone.id !== keyNumber);
 					toggleDropZones();
-					pickUpRing(sourcePlayArea);
+					pickUpRing();
 					moving = !moving;
 				}
 			} else {
 				destinationPlayArea = activePlayArea;
 				toggleDropZones();
 				availableDropZones = [];
-				moveRing(keyNumber)
+				placeRing(keyNumber)
 				moving = !moving;
 			}
 		}
 	});
+}
+
+function initMoveValues(e) {
+	keyNumber = parseInt(e.key);
+	activePlayArea = playAreas[keyNumber - 1];
 }
 
 function toggleDropZones() {
@@ -72,21 +77,13 @@ function toggleDropZones() {
 	}
 }
 
-function pickUpRing(sourcePlayArea) {
+function pickUpRing() {
 	activeRing = sourcePlayArea.querySelector('.ring');
-	// playAreas[sourcePlayAreaIndex].children.removeChild(activeRing);
+	activePlayArea.removeChild(activeRing);
 }
 
-
-function moveRing() {
+function placeRing() {
 	const postElement = destinationPlayArea.querySelector('.post');
 	postElement.after(activeRing);
 	activeRing = null;
-
-	/*
-	If the active drop zone doesn't have a movable ring, do nothing.
-	Otherwise, take the top ring and move it to the destination drop zone if it is a legal move, meaning if there are
-	no rings on the destination drop zone or if the highest ring on the pole is larger than the active ring.
-	 */
-
 }
