@@ -1,107 +1,92 @@
 const RING_COUNT = 10;
-const POST_COUNT = 3;
 const PLAY_AREA_COUNT = 3;
+const ACCEPTABLE_KEYS = ['1', '2', '3'];
 
-let draggedRing;
-let active = false;
-let currentX;
-let currentY;
-let initialX;
-let initialY;
-let xOffset = 0;
-let yOffset = 0;
-let rings = [];
-let posts = [];
-let playAreas = [];
+let availableDropZones = [];
+let activeRing;
+let sourcePlayArea;
+let destinationPlayArea;
+let rings = initRings();
+let playAreas = initPlayAreas();
+let dropZones = initDropZones();
+let moving = false;
 
-initRings();
-initPosts();
-initPlayAreas();
-initDraggableElements();
+initKeyListeners();
 
 function initRings() {
+	let rings = []
 	for (let i = 0; i < RING_COUNT; i++) {
 		rings[i] = document.querySelector('#ring-' + (i + 1));
 	}
-}
-
-function initPosts() {
-	for (let i = 0; i < POST_COUNT; i++) {
-		posts[i] = document.querySelector('#post-' + (i + 1));
-	}
-	posts[0] = [...rings];
+	return rings;
 }
 
 function initPlayAreas() {
+	let playAreas = [];
 	for (let i = 0; i < PLAY_AREA_COUNT; i++) {
 		playAreas[i] = document.querySelector('#play-area-' + (i + 1));
-		playAreas[i].addEventListener('dragenter', (e) => {e.preventDefault()});
-		playAreas[i].addEventListener('dragover', (e) => {e.preventDefault()});
+		playAreas[i].addEventListener('click', (e) => {e.preventDefault()}); // TODO: make this move rings also.
 	}
+	return playAreas;
 }
 
-function initDraggableElements() {
-	rings[0].classList.add('draggable');
-	// Init drag events for ring 1
-	rings[0].addEventListener("touchstart", dragStart, false);
-	rings[0].addEventListener("touchend", dragEnd, false);
-	rings[0].addEventListener("touchmove", drag, false);
-
-	rings[0].addEventListener("mousedown", dragStart, false);
-	rings[0].addEventListener("mouseup", dragEnd, false);
-	rings[0].addEventListener("mousemove", drag, false);
+function initDropZones() {
+	let dropZones = [];
+	for (let i = 0; i < PLAY_AREA_COUNT; i++) {
+		dropZones[i] = {
+			element: document.querySelector('#dropzone-' + (i + 1)),
+			id: i + 1
+		};
+	}
+	return dropZones;
 }
 
-const ringIsDraggable = e => rings.includes(e.target) && e.target.classList.contains('draggable');
-
-function dragStart(e) {
-	if (!ringIsDraggable(e)) {
-		return;
-	}
-
-	active = true;
-	draggedRing = e.target;
-
-	if (e.type === 'touchstart') {
-		initialX = e.touches[0].clientX - xOffset;
-		initialY = e.touches[0].clientY - yOffset;
-	} else {
-		initialX = e.clientX - xOffset;
-		initialY = e.clientY - yOffset;
-	}
-}
-
-function dragEnd(e) {
-	console.log(e.target);
-	if (e.target.className === 'play-area' || e.target.className === 'post') {
-		const origin = draggedRing.parentNode;
-		const destination = (e.target.className === 'play-area') ? e.target : e.target.parentElement;
-		origin.removeChild(draggedRing);
-		if (origin.children[1]) {
-			origin.children[1].setAttribute('draggable', true);
+function initKeyListeners() {
+	document.addEventListener('keypress', (e) => {
+		const key = e.key;
+		if (ACCEPTABLE_KEYS.includes(key)) {
+			const keyNumber = parseInt(key);
+			const activePlayArea = playAreas[keyNumber - 1];
+			if (!moving) {
+				sourcePlayArea = activePlayArea;
+				if(sourcePlayArea.querySelector('.ring')) {
+					availableDropZones = dropZones.filter(dropzone => dropzone.id !== keyNumber);
+					toggleDropZones();
+					pickUpRing(sourcePlayArea);
+					moving = !moving;
+				}
+			} else {
+				destinationPlayArea = activePlayArea;
+				toggleDropZones();
+				availableDropZones = [];
+				moveRing(keyNumber)
+				moving = !moving;
+			}
 		}
-		destination.firstElementChild.after(draggedRing);
+	});
+}
+
+function toggleDropZones() {
+	for (const activeDropzone of availableDropZones) {
+		activeDropzone.element.classList.toggle('hidden');
 	}
 }
 
-const setTranslate = (xPos, yPos, el) => el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+function pickUpRing(sourcePlayArea) {
+	activeRing = sourcePlayArea.querySelector('.ring');
+	// playAreas[sourcePlayAreaIndex].children.removeChild(activeRing);
+}
 
 
-function drag(e) {
-	if (active) {
-		e.preventDefault();
+function moveRing() {
+	const postElement = destinationPlayArea.querySelector('.post');
+	postElement.after(activeRing);
+	activeRing = null;
 
-		if (e.type === 'touchmove') {
-			currentX = e.touches[0].clientX - initialX;
-			currentY = e.touches[0].clientY - initialY;
-		} else {
-			currentX = e.clientX - initialX;
-			currentY = e.clientY - initialY;
-		}
+	/*
+	If the active drop zone doesn't have a movable ring, do nothing.
+	Otherwise, take the top ring and move it to the destination drop zone if it is a legal move, meaning if there are
+	no rings on the destination drop zone or if the highest ring on the pole is larger than the active ring.
+	 */
 
-		xOffset = currentX;
-		yOffset = currentY;
-
-		setTranslate(currentX, currentY, draggedRing);
-	}
 }
