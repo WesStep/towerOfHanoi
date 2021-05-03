@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Tower of Hanoi</title>
 	<link rel="stylesheet" href="./assets/app.css">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
@@ -9,8 +10,11 @@
 	<script type="module" src="./assets/modules/app.js"></script>
 </head>
 <body>
-	<h1>Tower of Hanoi</h1>
-	<div>
+	<header>
+		<h1>Tower of Hanoi</h1>
+		<p>Use "1", "2", and "3" on your keyboard to move rings. First to pick up a ring, and second to place a ring.</p>
+	</header>
+	<div class="body">
 		<div id="play-area">
 			<div id="dropzone-1" class="dropzone hidden">1</div>
 			<div id="dropzone-2" class="dropzone hidden">2</div>
