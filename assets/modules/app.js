@@ -27,7 +27,7 @@ function initPlayAreas() {
 	let playAreas = [];
 	for (let i = 0; i < PLAY_AREA_COUNT; i++) {
 		playAreas[i] = document.querySelector('#play-area-' + (i + 1));
-		playAreas[i].addEventListener('click', (e) => {e.preventDefault()}); // TODO: make this move rings also.
+		// playAreas[i].addEventListener('click', (e) => {e.preventDefault()}); TODO: make this move rings also.
 	}
 	return playAreas;
 }
@@ -49,7 +49,7 @@ function initKeyListeners() {
 			initMoveValues(e);
 			if (!moving) {
 				sourcePlayArea = activePlayArea;
-				if(sourcePlayArea.querySelector('.ring')) {
+				if(sourcePlayArea.querySelector('.rings .ring')) {
 					availableDropZones = dropZones.filter(dropzone => dropzone.id !== keyNumber);
 					toggleDropZones();
 					pickUpRing();
@@ -58,8 +58,8 @@ function initKeyListeners() {
 			} else {
 				destinationPlayArea = activePlayArea;
 				toggleDropZones();
+				placeRing()
 				availableDropZones = [];
-				placeRing(keyNumber)
 				moving = !moving;
 			}
 		}
@@ -78,15 +78,15 @@ function toggleDropZones() {
 }
 
 function pickUpRing() {
-	activeRing = sourcePlayArea.querySelector('.ring');
-	activePlayArea.removeChild(activeRing);
+	activeRing = sourcePlayArea.querySelector('.rings .ring');
+	activePlayArea.querySelector('.rings').removeChild(activeRing);
 }
 
 function placeRing() {
-	const postElement = destinationPlayArea.querySelector('.post');
-	const topRing = destinationPlayArea.querySelector('.ring');
+	const ringsElement = destinationPlayArea.querySelector('.rings');
+	const topRing = destinationPlayArea.querySelector('.rings .ring');
 	if (postIsEmpty() || !postIsEmpty() && activeRingIsSmaller(topRing)) {
-		postElement.after(activeRing);
+		ringsElement.prepend(activeRing);
 	} else {
 		returnRingBack();
 	}
@@ -94,7 +94,7 @@ function placeRing() {
 }
 
 function postIsEmpty() {
-	return destinationPlayArea.querySelector('.ring') === null;
+	return destinationPlayArea.querySelector('.rings .ring') === null;
 }
 
 function activeRingIsSmaller(topRing) {
@@ -102,5 +102,5 @@ function activeRingIsSmaller(topRing) {
 }
 
 function returnRingBack() {
-	sourcePlayArea.querySelector('.post').after(activeRing);
+	sourcePlayArea.querySelector('.rings').prepend(activeRing);
 }

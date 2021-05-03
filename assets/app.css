@@ -92,9 +92,11 @@ header p {
 	height: 100%;
 	width: 100%;
 	display:grid;
+	justify-items: center;
 }
 
 #play-area {
+	position: relative;
 	display: grid;
 	grid-template:
 		"t-1 t-2 t-3" auto
@@ -106,38 +108,36 @@ header p {
 #play-area-1 {
 	grid-area: p-1;
 	grid-template: "pa-1" 1fr / 1fr;
-	grid-auto-rows: min-content;
-	align-items: center;
-	justify-items: center;
 }
 
 #play-area-2 {
 	grid-area: p-2;
-	grid-template: "pa-2" 1fr / 1fr;;
-	grid-auto-rows: min-content;
-	align-items: center;
-	justify-items: center;
+	grid-template: "pa-2" 1fr / 1fr;
 }
 
 #play-area-3 {
 	grid-area: p-3;
-	grid-template: "pa-3" 1fr / 1fr;;
-	grid-auto-rows: min-content;
-	align-items: center;
-	justify-items: center;
+	grid-template: "pa-3" 1fr / 1fr;
 }
 
 .post {
+	position: relative;
+	bottom: 0;
 	padding: 1rem;
 	width: 4rem;
-	min-height: 1rem;
+	min-height: 32rem;
 	height: 100%;
 	background: saddlebrown;
 	border-radius: 2rem 2rem 0 0;
 	box-shadow: inset 0 0 1.5rem #222, 3px 3px 3px rgba(0, 0, 0, 0.5);
+	z-index: 3;
 }
 
 #post-1 {
+	grid-area: pa-1;
+}
+
+#post-1-rings {
 	grid-area: pa-1;
 }
 
@@ -145,7 +145,15 @@ header p {
 	grid-area: pa-2;
 }
 
+#post-2-rings {
+	grid-area: pa-2;
+}
+
 #post-3 {
+	grid-area: pa-3;
+}
+
+#post-3-rings {
 	grid-area: pa-3;
 }
 
@@ -208,4 +216,13 @@ header p {
 #ring-10 {
 	width: 24rem;
 	background: darkred;
+}
+
+.rings {
+	position: relative;
+	z-index: 4;
+	margin-top: auto;
+	display: grid;
+	grid-auto-rows: min-content;
+	place-items: center;
 }
