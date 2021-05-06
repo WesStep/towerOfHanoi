@@ -3,7 +3,8 @@
 ## Purpose
 
 This was to help me learn how to manipulate the DOM with JavaScript. In the early stages it also helped me learn the
-HTML Click and Drag API, along with other draggable functionality.
+HTML Click and Drag API, along with other draggable functionality, though it didn't keep that functionality throughout
+the development process.
 
 ## "Final" Product
 
