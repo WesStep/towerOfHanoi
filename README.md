@@ -9,7 +9,7 @@ the development process.
 ## "Final" Product
 
 Now, the app is a fully functional "Tower of Hanoi" game that you can try out for yourself
-[here](https://wesstep.github.io/towerOfHanoi).
+[here](https://tower.wesstep.com).
 
 ## Going Forward
 
